@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Nishwas dark green theme - always dark */
+  --background: #0a1a14;
+  --background-2: #0d2018;
+  --surface: #102318;
+  --surface-2: #152d1f;
+  --border: #1e3d2a;
+  --border-subtle: #162c1e;
+
+  --foreground: #e8f5ee;
+  --foreground-muted: #7ea98a;
+  --foreground-dim: #4d7a5e;
+
+  --primary: #10b981;
+  --primary-foreground: #0a1a14;
+  --primary-dim: #0d9166;
+
+  --accent-orange: #f97316;
+  --accent-yellow: #eab308;
+  --accent-red: #ef4444;
+  --accent-green: #22c55e;
+  --accent-blue: #3b82f6;
+
+  --card: #102318;
+  --card-foreground: #e8f5ee;
+  --card-border: #1e3d2a;
+
+  --radius: 0.75rem;
+
+  /* AQI level colors */
+  --aqi-good: #22c55e;
+  --aqi-moderate: #eab308;
+  --aqi-unhealthy-sensitive: #f97316;
+  --aqi-unhealthy: #ef4444;
+  --aqi-very-unhealthy: #a855f7;
+  --aqi-hazardous: #991b1b;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--surface-2);
+  --color-muted-foreground: var(--foreground-muted);
+  --color-accent: var(--surface-2);
+  --color-accent-foreground: var(--foreground);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--foreground-dim);
+  }
+}
+
+/* Leaflet map dark theme overrides */
+.leaflet-container {
+  background: #0a1a14 !important;
+}
+.leaflet-tile-pane {
+  filter: brightness(0.6) saturate(0.5) hue-rotate(120deg);
+}
+.leaflet-control-zoom a {
+  background: #102318 !important;
+  color: #10b981 !important;
+  border-color: #1e3d2a !important;
+}
+.leaflet-control-zoom a:hover {
+  background: #152d1f !important;
+}
+.leaflet-control-attribution {
+  background: rgba(10, 26, 20, 0.8) !important;
+  color: #4d7a5e !important;
+}
+.leaflet-control-attribution a {
+  color: #10b981 !important;
+}
