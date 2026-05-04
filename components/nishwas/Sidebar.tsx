@@ -1,6 +1,6 @@
 "use client"
 
-import { useNishwasStore } from "@/lib/store"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Home,
   Cloud,
@@ -12,16 +12,17 @@ import {
 } from "lucide-react"
 
 const navItems = [
-  { label: "Home", icon: Home },
-  { label: "Go Outside", icon: Cloud },
-  { label: "Exposure", icon: Activity },
-  { label: "Community", icon: Users },
-  { label: "Action", icon: Zap },
-  { label: "Education", icon: BookOpen },
+  { label: "Home", icon: Home, href: "/" },
+  { label: "Go Outside", icon: Cloud, href: "/go-outside" },
+  { label: "Exposure", icon: Activity, href: "/exposure" },
+  { label: "Community", icon: Users, href: "/community" },
+  { label: "Action", icon: Zap, href: "/action" },
+  { label: "Education", icon: BookOpen, href: "/education" },
 ]
 
 export default function Sidebar() {
-  const { activePage, setActivePage } = useNishwasStore()
+  const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <aside className="w-64 shrink-0 h-full flex flex-col border-r border-[var(--border)] bg-[var(--surface)]">
@@ -37,12 +38,12 @@ export default function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 py-4 px-3 space-y-1">
-        {navItems.map(({ label, icon: Icon }) => {
-          const isActive = activePage === label
+        {navItems.map(({ label, icon: Icon, href }) => {
+          const isActive = pathname === href
           return (
             <button
               key={label}
-              onClick={() => setActivePage(label)}
+              onClick={() => router.push(href)}
               className={`
                 w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
                 transition-all duration-150 cursor-pointer

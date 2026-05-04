@@ -29,35 +29,57 @@ export default function MapView() {
           "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
       })
 
+      // Bangladesh bounds
+      const bounds = L.latLngBounds([20.5, 88.0], [26.6, 92.8])
+
       const map = L.map(mapRef.current!, {
-        center: [23.7761, 90.3990],
-        zoom: 12,
+        center: [23.6850, 90.3563],
+        zoom: 6,
+        minZoom: 6,
+        maxZoom: 12,
+        maxBounds: bounds,
+        maxBoundsViscosity: 1.0,
         zoomControl: true,
         attributionControl: true,
       })
 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19,
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20,
       }).addTo(map)
 
-      // Add AQI circle markers
-      mapMarkers.forEach((marker) => {
-        const color = getAQIColor(marker.aqi)
-        const circleMarker = L.circleMarker([marker.lat, marker.lng], {
-          radius: 14,
-          fillColor: color,
-          color: color,
-          weight: 2,
-          opacity: 0.9,
-          fillOpacity: 0.55,
+      // Add AQI animated markers
+      mapMarkers.forEach((markerData) => {
+        const color = getAQIColor(markerData.aqi)
+        
+        const iconHtml = `
+          <div style="position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
+            <div class="animate-ping absolute h-full w-full rounded-full opacity-50" style="background-color: ${color}; animation-duration: 2s;"></div>
+            <div class="relative rounded-full h-4 w-4 shadow-[0_0_10px_rgba(0,0,0,0.5)] flex items-center justify-center border-2 border-white/80" style="background-color: ${color};"></div>
+          </div>
+        `
+
+        const marker = L.marker([markerData.lat, markerData.lng], {
+          icon: L.divIcon({
+            html: iconHtml,
+            className: "",
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+            popupAnchor: [0, -10],
+          })
         }).addTo(map)
 
-        circleMarker.bindPopup(
-          `<div style="background:#102318;color:#e8f5ee;border:1px solid #1e3d2a;border-radius:8px;padding:10px;min-width:140px;">
-            <div style="font-weight:700;font-size:13px;margin-bottom:4px;">${marker.name}</div>
-            <div style="font-size:12px;color:#7ea98a;">AQI</div>
-            <div style="font-size:20px;font-weight:800;color:${color};">${marker.aqi}</div>
+        marker.bindPopup(
+          `<div style="background:var(--surface);color:var(--foreground);border:1px solid var(--border);border-radius:12px;padding:12px;min-width:160px;box-shadow:0 10px 25px -5px rgba(0, 0, 0, 0.5);">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+              <div style="width:8px;height:8px;border-radius:50%;background-color:${color};"></div>
+              <div style="font-weight:700;font-size:14px;">${markerData.name}</div>
+            </div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--border);padding-top:8px;">
+              <div style="font-size:11px;color:var(--foreground-muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;">AQI</div>
+              <div style="font-size:24px;font-weight:800;color:${color};">${markerData.aqi}</div>
+            </div>
           </div>`,
           {
             className: "nishwas-popup",
@@ -127,7 +149,7 @@ export default function MapView() {
 
       {/* Map container */}
       <div className="relative">
-        <div ref={mapRef} className="w-full h-72" style={{ zIndex: 0 }} />
+        <div ref={mapRef} className="w-full h-80 relative z-0" />
 
         {/* Wind source badge */}
         <div className="absolute bottom-3 left-3 flex items-center gap-2 bg-[var(--surface)]/90 backdrop-blur-sm border border-[var(--border)] rounded-lg px-3 py-2 z-[999]">

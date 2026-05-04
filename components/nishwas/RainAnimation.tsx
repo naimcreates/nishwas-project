@@ -5,9 +5,10 @@ import { Cloud, CloudRain, CloudDrizzle } from "lucide-react"
 
 interface RainAnimationProps {
   rainProbability: number
+  hideText?: boolean
 }
 
-export default function RainAnimation({ rainProbability }: RainAnimationProps) {
+export default function RainAnimation({ rainProbability, hideText }: RainAnimationProps) {
   // Determine rain intensity based on probability
   const isRaining = rainProbability > 30
   let intensity = "light"
@@ -62,14 +63,18 @@ export default function RainAnimation({ rainProbability }: RainAnimationProps) {
         ) : (
           <CloudRain className="w-10 h-10 text-blue-400" />
         )}
-        <p className="text-sm font-semibold text-blue-300">{rainProbability}%</p>
-        <p className="text-xs text-blue-400 capitalize">
-          {intensity === "light"
-            ? "Light drizzle"
-            : intensity === "medium"
-              ? "Moderate rain"
-              : "Heavy rain"}
-        </p>
+        {!hideText && (
+          <>
+            <p className="text-sm font-semibold text-blue-300">{rainProbability}%</p>
+            <p className="text-xs text-blue-400 capitalize">
+              {intensity === "light"
+                ? "Light drizzle"
+                : intensity === "medium"
+                  ? "Moderate rain"
+                  : "Heavy rain"}
+            </p>
+          </>
+        )}
       </div>
 
       {/* Ripple effect on ground */}

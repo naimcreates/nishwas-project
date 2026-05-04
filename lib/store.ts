@@ -94,11 +94,17 @@ export const useNishwasStore = create<NishwasState>((set) => ({
   floodRisk: "Low",
   exposureScore: 64,
   mapMarkers: [
-    { id: "1", lat: 23.8103, lng: 90.4125, aqi: 168, name: "Mirpur" },
-    { id: "2", lat: 23.7469, lng: 90.3763, aqi: 142, name: "Dhanmondi" },
-    { id: "3", lat: 23.7925, lng: 90.4078, aqi: 125, name: "Gulshan" },
-    { id: "4", lat: 23.7761, lng: 90.3990, aqi: 189, name: "Mohakhali" },
-    { id: "5", lat: 23.7270, lng: 90.4160, aqi: 95, name: "Rampura" },
+    { id: "1", lat: 23.8103, lng: 90.4125, aqi: 168, name: "Dhaka" },
+    { id: "2", lat: 22.3569, lng: 91.7832, aqi: 142, name: "Chattogram" },
+    { id: "3", lat: 24.8949, lng: 91.8687, aqi: 95, name: "Sylhet" },
+    { id: "4", lat: 24.3636, lng: 88.6241, aqi: 189, name: "Rajshahi" },
+    { id: "5", lat: 22.8456, lng: 89.5403, aqi: 125, name: "Khulna" },
+    { id: "6", lat: 22.7010, lng: 90.3535, aqi: 88, name: "Barishal" },
+    { id: "7", lat: 25.7439, lng: 89.2752, aqi: 110, name: "Rangpur" },
+    { id: "8", lat: 24.7471, lng: 90.4203, aqi: 135, name: "Mymensingh" },
+    { id: "9", lat: 23.4682, lng: 91.1788, aqi: 150, name: "Cumilla" },
+    { id: "10", lat: 24.0958, lng: 89.9322, aqi: 175, name: "Tangail" },
+    { id: "11", lat: 21.4339, lng: 92.0058, aqi: 65, name: "Cox's Bazar" },
   ],
   news: [
     {

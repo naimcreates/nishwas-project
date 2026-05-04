@@ -1,5 +1,5 @@
-import DashboardLayout from "@/components/nishwas/DashboardLayout"
+import HomePage from "@/components/nishwas/HomePage"
 
 export default function Page() {
-  return <DashboardLayout />
+  return <HomePage />
 }

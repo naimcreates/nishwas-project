@@ -51,12 +51,20 @@ const dailyData = [
 ]
 
 // Chart data for temperature overview
-const chartData = hourlyData.map((h, i) => ({
-  time: h.time,
-  temp: h.temp,
-  precip: h.precip,
-  index: i,
-}))
+const getChartData = (day: string) => {
+  // Generate slightly different data based on the selected day to simulate changes
+  const offset = day === "Today" ? 0 : day === "Yesterday" ? -2 : 2
+  return hourlyData.map((h, i) => ({
+    time: h.time,
+    temp: h.temp + offset,
+    precip: Math.max(0, h.precip + (offset * 5)),
+    wind: Math.max(5, 12 + (Math.sin(i) * 8) + offset),
+    humidity: Math.min(100, Math.max(30, 60 + (Math.cos(i) * 20) + offset * 2)),
+    pressure: 1005 + (Math.sin(i) * 5),
+    uv: Math.max(0, Math.min(11, 5 + (Math.sin(i - 4) * 6))),
+    index: i,
+  }))
+}
 
 const tabs = [
   "Overview",
@@ -94,8 +102,11 @@ function getWeatherIcon(type: string, size = 24) {
 export default function WeatherPage() {
   const { weather, location, setActivePage } = useNishwasStore()
   const [activeTab, setActiveTab] = useState("Overview")
+  const [selectedDay, setSelectedDay] = useState("Today")
   const [showFeelsLike, setShowFeelsLike] = useState(false)
   const [selectedHour, setSelectedHour] = useState(1) // "Now" is at index 1
+
+  const chartData = getChartData(selectedDay)
 
   // Get current selected hour data
   const currentHourData = hourlyData[selectedHour]
@@ -317,13 +328,14 @@ export default function WeatherPage() {
           {dailyData.map((day, idx) => (
             <motion.div
               key={idx}
+              onClick={() => setSelectedDay(day.day)}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.05 * idx }}
-              className={`flex flex-col items-center gap-1 px-4 py-3 rounded-xl shrink-0 min-w-[80px] ${
-                day.isToday
-                  ? "bg-blue-500/20 border border-blue-500/30"
-                  : "bg-[var(--surface-2)]"
+              className={`flex flex-col items-center gap-1 px-4 py-3 rounded-xl shrink-0 min-w-[80px] cursor-pointer transition-colors ${
+                selectedDay === day.day
+                  ? "bg-[var(--primary)]/20 border border-[var(--primary)]/30"
+                  : "bg-[var(--surface-2)] hover:bg-[var(--surface-3)]"
               }`}
             >
               <span className="text-[10px] text-[var(--foreground-muted)]">{day.date}</span>
@@ -339,7 +351,7 @@ export default function WeatherPage() {
 
         {/* Timeline Chart with Rain Overlay */}
         <div className="p-4">
-          <TimelineChart data={chartData} />
+          <TimelineChart data={chartData} activeTab={activeTab} />
         </div>
 
         {/* Precipitation bars */}

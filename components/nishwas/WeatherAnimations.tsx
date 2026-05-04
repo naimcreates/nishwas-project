@@ -4,9 +4,10 @@ import { motion } from "framer-motion"
 
 interface TemperatureAnimationProps {
   temperature: number
+  hideText?: boolean
 }
 
-export function TemperatureAnimation({ temperature }: TemperatureAnimationProps) {
+export function TemperatureAnimation({ temperature, hideText }: TemperatureAnimationProps) {
   // Cool (below 15°C) → Warm (above 30°C)
   const normalizedTemp = Math.min(Math.max((temperature - 10) / 25, 0), 1)
 
@@ -46,31 +47,34 @@ export function TemperatureAnimation({ temperature }: TemperatureAnimationProps)
       ))}
 
       {/* Temperature display */}
-      <motion.div
-        className="relative z-10 flex flex-col items-center gap-1"
-        animate={{
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      >
-        <p className="text-4xl font-bold text-white">{temperature}°</p>
-        <p className="text-xs text-orange-200">
-          {temperature < 15 ? "Cool" : temperature < 25 ? "Mild" : "Warm"}
-        </p>
-      </motion.div>
+      {!hideText && (
+        <motion.div
+          className="relative z-10 flex flex-col items-center gap-1"
+          animate={{
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <p className="text-4xl font-bold text-white">{temperature}°</p>
+          <p className="text-xs text-orange-200">
+            {temperature < 15 ? "Cool" : temperature < 25 ? "Mild" : "Warm"}
+          </p>
+        </motion.div>
+      )}
     </motion.div>
   )
 }
 
 interface HumidityAnimationProps {
   humidity: number
+  hideText?: boolean
 }
 
-export function HumidityAnimation({ humidity }: HumidityAnimationProps) {
+export function HumidityAnimation({ humidity, hideText }: HumidityAnimationProps) {
   // Create fog/mist effect based on humidity
   const mist = Math.min(humidity / 100, 1)
 
@@ -95,22 +99,24 @@ export function HumidityAnimation({ humidity }: HumidityAnimationProps) {
       ))}
 
       {/* Humidity display */}
-      <motion.div
-        className="relative z-10 flex flex-col items-center gap-1"
-        animate={{
-          opacity: [0.9, 1, 0.9],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      >
-        <p className="text-4xl font-bold text-slate-200">{humidity}%</p>
-        <p className="text-xs text-slate-400">
-          {humidity < 40 ? "Dry" : humidity < 70 ? "Moderate" : "Very Humid"}
-        </p>
-      </motion.div>
+      {!hideText && (
+        <motion.div
+          className="relative z-10 flex flex-col items-center gap-1"
+          animate={{
+            opacity: [0.9, 1, 0.9],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          <p className="text-4xl font-bold text-slate-200">{humidity}%</p>
+          <p className="text-xs text-slate-400">
+            {humidity < 40 ? "Dry" : humidity < 70 ? "Moderate" : "Very Humid"}
+          </p>
+        </motion.div>
+      )}
 
       {/* Droplets for high humidity */}
       {humidity > 60 &&
